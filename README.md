@@ -46,3 +46,9 @@ Branch names in DistGit:
 >>> [x.branch for x in aliases["fedora-all"]]
 ['f38', 'f39', 'rawhide']
 ```
+
+
+## Similar projects
+
+- [fedfind](https://pagure.io/fedora-qa/fedfind) - Python module and CLI for
+  finding and inspecting Fedora composes and deliverables
