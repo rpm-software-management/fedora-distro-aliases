@@ -15,10 +15,13 @@ BuildRequires:  python3-devel
 
 
 %global _description %{expand:
-Some projects such as Tito, Packit, Fedora Review Service, etc operate over
-currently active Fedora releases. They either need to manualy define them
-in a list or implement a code similar to this.}
+Some projects such as Tito, Packit,
+Fedora Review Service, etc operate over currently active Fedora releases.
+They can use this package to find their version numbers instead of manually
+defining a list.
 
+This package queries Bodhi to find the active releases and therefore requires an
+internet connection.}
 
 %description %_description
 

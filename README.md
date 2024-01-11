@@ -4,6 +4,9 @@ Some projects such as Tito, Packit, Fedora Review Service, etc operate over
 currently active Fedora releases. They can use this package to find their
 version numbers instead of manually defining a list.
 
+This package queries Bodhi to find the active releases and therefore requires an
+internet connection.
+
 [![REUSE status](https://api.reuse.software/badge/github.com/rpm-software-management/fedora-distro-aliases)](https://api.reuse.software/info/github.com/rpm-software-management/fedora-distro-aliases)
 
 ## Supported aliases

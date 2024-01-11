@@ -6,8 +6,11 @@ from setuptools import setup, find_packages
 
 long_description = """Some projects such as Tito, Packit,
 Fedora Review Service, etc operate over currently active Fedora releases.
-They either need to manualy define them in a list or implement a code similar
-to this."""
+They can use this package to find their version numbers instead of manually
+defining a list.
+
+This package queries Bodhi to find the active releases and therefore requires an
+internet connection."""
 
 setup_requires = [
     "pytest",
