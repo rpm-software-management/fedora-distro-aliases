@@ -1,5 +1,10 @@
 # Fedora Distro Aliases
 
+Some projects such as Tito, Packit, Fedora Review Service, etc operate over
+currently active Fedora releases. They can use this package to find their
+version numbers instead of manually defining a list.
+
+
 ## Supported aliases
 
 | Alias name             | Description                                         |
