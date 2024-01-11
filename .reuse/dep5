@@ -1,0 +1,16 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: fedora-distro-aliases
+Upstream-Contact: FrostyX <jkadlcik@redhat.com>
+Source: https://github.com/rpm-software-management/fedora-distro-aliases
+
+Files: fedora_distro_aliases/* tests/* setup.py README.md
+Copyright: 2024 Red Hat
+License: GPL-2.0-or-later
+
+Files: fedora-distro-aliases.spec
+Copyright: Fedora Project Authors
+License: MIT
+
+Files: .tito/*  .gitignore
+Copyright: Not Copyrightable
+License: LicenseRef-Not-Copyrightable
