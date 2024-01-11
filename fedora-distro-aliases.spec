@@ -47,7 +47,7 @@ Summary:        %{summary}
 
 
 %files -n python3-fedora-distro-aliases -f %{pyproject_files}
-%license LICENSE
+%license LICENSES/GPL-2.0-or-later.txt
 %doc README.md
 
 
