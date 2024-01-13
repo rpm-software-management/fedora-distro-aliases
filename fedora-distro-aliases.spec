@@ -1,5 +1,5 @@
 Name:           fedora-distro-aliases
-Version:        1.0
+Version:        1.1
 Release:        1%{?dist}
 Summary:        Aliases for active Fedora releases
 
@@ -55,5 +55,11 @@ Summary:        %{summary}
 
 
 %changelog
+* Sat Jan 13 2024 Jakub Kadlcik <frostyx@email.cz> 1.1-1
+- Fix Source URL (frostyx@email.cz)
+- Unify descriptions and mention querying bodhi (frostyx@email.cz)
+- Link fedfind project (frostyx@email.cz)
+- make repository REUSE compliant (msuchy@redhat.com)
+
 * Tue Jan 09 2024 Jakub Kadlcik <frostyx@email.cz> - 1.0-1
 - Initial package
