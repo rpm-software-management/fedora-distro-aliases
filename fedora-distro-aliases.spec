@@ -5,7 +5,7 @@ Summary:        Aliases for active Fedora releases
 
 License:        GPL-2.0-or-later
 URL:            https://github.com/rpm-software-management/fedora-distro-aliases
-Source:         %{URL}/archive/%{version}/%{name}-%{version}.tar.gz
+Source:         %{URL}/archive/%{name}-%{version}-1/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  python3-devel
