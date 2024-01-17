@@ -22,6 +22,21 @@ internet connection.
 | `epel-all`             | All active EPEL releases                            |
 
 
+## Installation
+
+The package is available in the Fedora repositories:
+
+```
+dnf install python3-fedora-distro-aliases
+```
+
+Alternatively, you can install it from PyPI
+
+```
+pip3 install fedora-distro-aliases
+```
+
+
 ## Usage
 
 ```python
