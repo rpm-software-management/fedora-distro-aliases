@@ -50,6 +50,13 @@ Branch names in DistGit:
 ['f38', 'f39', 'rawhide']
 ```
 
+Only version numbers:
+
+```python
+>>> [x.version for x in aliases["fedora-stable"]]
+['38', '39']
+```
+
 
 ## Similar projects
 
