@@ -19,7 +19,7 @@ setup_requires = [
 
 install_requires = [
     "munch",
-    "bodhi-client",
+    "requests",
 ]
 
 __description__ = "Aliases for active Fedora releases"

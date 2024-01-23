@@ -4,32 +4,24 @@ currently active Fedora releases. They either need to manualy define them in
 a list or implement a code similar to this.
 """
 
-from bodhi.client.bindings import BodhiClient
+import requests
 from munch import Munch
-
-
-def bodhi_releases():
-    """
-    Return all releases from Bodhi
-    https://bodhi.fedoraproject.org
-    """
-    bodhi_client = BodhiClient()
-    releases = []
-    page = pages = 1
-    while page <= pages:
-        results = bodhi_client.get_releases(exclude_archived=True, page=page)
-        releases.extend(results.releases)
-        page += 1
-        pages = results.pages
-    return releases
 
 
 def bodhi_active_releases():
     """
     Return all active releases from Bodhi
+    https://bodhi.fedoraproject.org
     """
+    bodhi_url =  "https://bodhi.fedoraproject.org/releases/"
+    releases = []
     states = ["current", "pending", "frozen"]
-    return [x for x in bodhi_releases() if x.state in states]
+    for state in states:
+        url = "{0}?state={1}".format(bodhi_url, state)
+        response = requests.get(url)
+        response.raise_for_status()
+        releases.extend(response.json()["releases"])
+    return [Munch(x) for x in releases]
 
 
 def get_distro_aliases():
