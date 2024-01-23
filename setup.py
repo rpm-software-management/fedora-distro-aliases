@@ -30,7 +30,7 @@ __url__ = "https://github.com/rpm-software-management/fedora-distro-aliases"
 
 setup(
     name="fedora-distro-aliases",
-    version="1.1",
+    version="1.2",
     description=__description__,
     long_description=long_description,
     author=__author__,
