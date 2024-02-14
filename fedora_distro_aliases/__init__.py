@@ -44,7 +44,15 @@ def get_distro_aliases():
         "name": "Rawhide",
         "long_name": "Fedora Rawhide",
         "version": "rawhide",
+        "branch": "rawhide",
     })
+
+    # During the window from branching to the final release, things can get
+    # weird. Bodhi can be lying to us. For example, F40 was branched yesterday,
+    # therefore Rawhide is F41 now. However bodhi says that Fedora 40 branch is
+    # `rawhide` and F41 branch is `f41`.
+    if fedora[-2].branch == "rawhide":
+        fedora[-2].branch = "f{0}".format(fedora[-2].version)
 
     fedora_stable = [x for x in fedora if x.state == "current"]
     fedora_devel = [x for x in fedora if x.state == "pending"]
