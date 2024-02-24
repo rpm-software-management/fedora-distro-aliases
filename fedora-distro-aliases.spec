@@ -1,5 +1,5 @@
 Name:           fedora-distro-aliases
-Version:        1.2
+Version:        1.3
 Release:        1%{?dist}
 Summary:        Aliases for active Fedora releases
 
@@ -55,6 +55,11 @@ Summary:        %{summary}
 
 
 %changelog
+* Sat Feb 24 2024 Jakub Kadlcik <frostyx@email.cz> 1.3-1
+- Make sure everything behaves correctly during the branching window
+  (frostyx@email.cz)
+- Add releasers.conf (frostyx@email.cz)
+
 * Tue Jan 23 2024 Jakub Kadlcik <frostyx@email.cz> 1.2-1
 - Drop bodhi-client dependency (frostyx@email.cz)
 - Add installation instructions (frostyx@email.cz)
