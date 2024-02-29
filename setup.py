@@ -20,6 +20,7 @@ setup_requires = [
 install_requires = [
     "munch",
     "requests",
+    "Click",  # for the CLI and GH Action
 ]
 
 __description__ = "Aliases for active Fedora releases"
@@ -43,4 +44,10 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
+    py_modules=["cli"],
+    entry_points={
+        "console_scripts": [
+            'resolve-fedora-aliases = fedora_distro_aliases.cli:cli'
+        ],
+    },
 )
