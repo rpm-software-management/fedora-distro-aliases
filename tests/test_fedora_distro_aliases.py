@@ -40,6 +40,7 @@ def test_distro():
     assert distro.namever == "foo-123"
     assert distro.product == "fedora"
     assert distro.product == "fedora"
+    assert distro.version_number == "123"
     assert "nonsense" not in distro
     assert "additional" not in distro
 
@@ -62,3 +63,9 @@ def test_f40_branch_to_final_release_window(requests_get):
     namevers = [x.namever for x in aliases["fedora-all"]]
     expected = ["fedora-38", "fedora-39", "fedora-40", "fedora-rawhide"]
     assert namevers == expected
+
+    versions = [x.version for x in aliases["fedora-all"]]
+    assert versions == ["38", "39", "40", "rawhide"]
+
+    version_numbers = [x.version_number for x in aliases["fedora-all"]]
+    assert version_numbers == ["38", "39", "40", "41"]
