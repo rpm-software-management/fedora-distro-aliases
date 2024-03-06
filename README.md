@@ -68,8 +68,15 @@ Branch names in DistGit:
 Only version numbers:
 
 ```python
->>> [x.version for x in aliases["fedora-stable"]]
-['38', '39']
+>>> [x.version for x in aliases["fedora-all"]]
+['38', '39', 'rawhide']
+```
+
+If you need a numeric version even for rawhide:
+
+```python
+>>> [x.version_number for x in aliases["fedora-all"]]
+['38', '39', '40']
 ```
 
 

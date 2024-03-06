@@ -33,7 +33,7 @@ def get_distro_aliases():
     epel = []
 
     distros = [Distro.from_bodhi_release(x) for x in releases if x.name != "ELN"]
-    distros.sort(key=lambda x: int(x.version))
+    distros.sort(key=lambda x: int(x.version_number))
 
     epel = [x for x in distros if x.product == "epel"]
     fedora = [x for x in distros if x.product == "fedora"]
@@ -79,7 +79,9 @@ class Distro(Munch):
         Create a `Distro` object from Bodhi `release`
         """
         keys = ["name", "long_name", "version", "state", "branch", "id_prefix"]
-        return cls({k: getattr(release, k) for k in keys})
+        distro = cls({k: getattr(release, k) for k in keys})
+        distro.version_number = release.version
+        return distro
 
     @property
     def product(self):
