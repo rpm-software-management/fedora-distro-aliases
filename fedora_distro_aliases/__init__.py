@@ -8,6 +8,12 @@ import requests
 from munch import Munch
 
 
+class BodhiDown(Exception):
+    """
+    When Bodhi API cannot be reached in a reasonable time.
+    """
+
+
 def bodhi_active_releases():
     """
     Return all active releases from Bodhi
@@ -29,8 +35,10 @@ def get_distro_aliases():
     Define distribution aliases like `fedora-stable`, `fedora-branched`,
     `epel-all`, and more.
     """
-    releases = bodhi_active_releases()
-    epel = []
+    try:
+        releases = bodhi_active_releases()
+    except requests.exceptions.RequestException as ex:
+        raise BodhiDown from ex
 
     distros = [Distro.from_bodhi_release(x) for x in releases if x.name != "ELN"]
     distros.sort(key=lambda x: int(x.version_number))
