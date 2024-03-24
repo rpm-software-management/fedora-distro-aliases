@@ -1,6 +1,8 @@
+from unittest import TestCase
 from unittest.mock import patch
 from munch import Munch
-from fedora_distro_aliases import Distro, get_distro_aliases
+from requests.exceptions import Timeout
+from fedora_distro_aliases import Distro, get_distro_aliases, BodhiDown
 from . import mock_responses
 
 
@@ -25,27 +27,37 @@ def test_distro():
     assert "additional" not in distro
 
 
-@patch("requests.get")
-def test_f40_branch_to_final_release_window(requests_get):
-    """
-    Test that everything behaves as expected during the window from branching
-    to the final release.
-    """
-    requests_get.side_effect = mock_responses([
-        "bodhi-f40-branch-window-current.json",
-        "bodhi-f40-branch-window-pending.json",
-        "bodhi-f40-branch-window-frozen.json",
-    ])
-    aliases = get_distro_aliases()
-    branches = [x.branch for x in aliases["fedora-all"]]
-    assert branches == ["f38", "f39", "f40", "rawhide"]
+class TestAliases(TestCase):
+    @patch("requests.get")
+    def test_f40_branch_to_final_release_window(self, requests_get):
+        """
+        Test that everything behaves as expected during the window from branching
+        to the final release.
+        """
+        requests_get.side_effect = mock_responses([
+            "bodhi-f40-branch-window-current.json",
+            "bodhi-f40-branch-window-pending.json",
+            "bodhi-f40-branch-window-frozen.json",
+        ])
+        aliases = get_distro_aliases()
+        branches = [x.branch for x in aliases["fedora-all"]]
+        assert branches == ["f38", "f39", "f40", "rawhide"]
 
-    namevers = [x.namever for x in aliases["fedora-all"]]
-    expected = ["fedora-38", "fedora-39", "fedora-40", "fedora-rawhide"]
-    assert namevers == expected
+        namevers = [x.namever for x in aliases["fedora-all"]]
+        expected = ["fedora-38", "fedora-39", "fedora-40", "fedora-rawhide"]
+        assert namevers == expected
 
-    versions = [x.version for x in aliases["fedora-all"]]
-    assert versions == ["38", "39", "40", "rawhide"]
+        versions = [x.version for x in aliases["fedora-all"]]
+        assert versions == ["38", "39", "40", "rawhide"]
 
-    version_numbers = [x.version_number for x in aliases["fedora-all"]]
-    assert version_numbers == ["38", "39", "40", "41"]
+        version_numbers = [x.version_number for x in aliases["fedora-all"]]
+        assert version_numbers == ["38", "39", "40", "41"]
+
+    @patch("requests.get")
+    def test_bodhi_outage(self, requests_get):
+        """
+        Test that any HTTP error ends up raising `BodhiDown` exception
+        """
+        requests_get.side_effect = Timeout
+        with self.assertRaises(BodhiDown):
+            get_distro_aliases()

@@ -80,6 +80,31 @@ If you need a numeric version even for rawhide:
 ```
 
 
+## Caching
+
+To avoid a single point of failure on Bodhi API, you can cache successfully
+fetched data, and use them when there is an issue. For example:
+
+```python
+from fedora_distro_aliases.cache import (
+    save_distro_aliases_cache,
+    load_distro_aliases_cache,
+    BadAliasesCache,
+)
+
+try:
+    try:
+        aliases = get_distro_aliases()
+        save_distro_aliases_cache(aliases)
+    except BodhiDown:
+        aliases = load_distro_aliases_cache()
+    print([x.branch for x in aliases["fedora-all"]])
+
+except BadAliasesCache as ex:
+    print("Fatal error: {0}".format(ex))
+```
+
+
 ## Similar projects
 
 - [fedfind](https://pagure.io/fedora-qa/fedfind) - Python module and CLI for
