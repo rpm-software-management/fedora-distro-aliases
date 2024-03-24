@@ -80,6 +80,29 @@ If you need a numeric version even for rawhide:
 ```
 
 
+## Caching
+
+To avoid a single point of failure on Bodhi API, we can cache successfully
+fetched data, and use them when there is an issue.
+
+```python
+>>> aliases = get_distro_aliases(cache=True)
+>>> [x.namever for x in aliases["fedora-all"]]
+['fedora-39', 'fedora-40', 'fedora-rawhide']
+```
+
+To configure parameters for the cache, or use your own caching mechanism, pass
+an object instead of `True`.
+
+```
+>>> from fedora_distro_aliases import Cache
+>>> cache = Cache(path="/tmp/fedora-distro-aliases-cache.json")
+>>> aliases = get_distro_aliases(cache=cache)
+>>> [x.namever for x in aliases["fedora-all"]]
+['fedora-39', 'fedora-40', 'fedora-rawhide']
+```
+
+
 ## Similar projects
 
 - [opensuse-distro-aliases](https://github.com/rpm-software-management/opensuse-distro-aliases) -
