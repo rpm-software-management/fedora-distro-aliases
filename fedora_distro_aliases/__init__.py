@@ -33,7 +33,7 @@ def get_distro_aliases():
     epel = []
 
     distros = [Distro.from_bodhi_release(x) for x in releases if x.name != "ELN"]
-    distros.sort(key=lambda x: int(x.version_number))
+    distros.sort(key=lambda x: float(x.version_number))
 
     epel = [x for x in distros if x.product == "epel"]
     fedora = [x for x in distros if x.product == "fedora"]
