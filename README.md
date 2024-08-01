@@ -82,5 +82,7 @@ If you need a numeric version even for rawhide:
 
 ## Similar projects
 
+- [opensuse-distro-aliases](https://github.com/rpm-software-management/opensuse-distro-aliases) -
+  Aliases for active openSUSE releases
 - [fedfind](https://pagure.io/fedora-qa/fedfind) - Python module and CLI for
   finding and inspecting Fedora composes and deliverables
