@@ -63,7 +63,7 @@ def test_pagination(requests_get):
         "bodhi-page-2.json",
     ])
     releases = bodhi_active_releases()
-    names = [r.name for r in releases]
+    names = [r["name"] for r in releases]
     assert names == [
         "ELN",
         "EPEL-10.0",
