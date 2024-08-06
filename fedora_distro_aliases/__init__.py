@@ -21,7 +21,7 @@ def bodhi_active_releases():
         response = requests.get(url)
         response.raise_for_status()
         releases.extend(response.json()["releases"])
-    return [Munch(x) for x in releases]
+    return releases
 
 
 def get_distro_aliases():
@@ -32,7 +32,7 @@ def get_distro_aliases():
     releases = bodhi_active_releases()
     epel = []
 
-    distros = [Distro.from_bodhi_release(x) for x in releases if x.name != "ELN"]
+    distros = [Distro.from_bodhi_release(x) for x in releases if x["name"] != "ELN"]
     distros.sort(key=lambda x: float(x.version_number))
 
     epel = [x for x in distros if x.product == "epel"]
@@ -79,8 +79,8 @@ class Distro(Munch):
         Create a `Distro` object from Bodhi `release`
         """
         keys = ["name", "long_name", "version", "state", "branch", "id_prefix"]
-        distro = cls({k: getattr(release, k) for k in keys})
-        distro.version_number = release.version
+        distro = cls({k: release.get(k) for k in keys})
+        distro.version_number = release["version"]
         return distro
 
     @property
