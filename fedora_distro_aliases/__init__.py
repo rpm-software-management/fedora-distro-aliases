@@ -6,6 +6,7 @@ a list or implement a code similar to this.
 
 import requests
 from munch import Munch
+from fedora_distro_aliases.cache import Cache
 
 
 def bodhi_active_releases():
@@ -13,7 +14,7 @@ def bodhi_active_releases():
     Return all active releases from Bodhi
     https://bodhi.fedoraproject.org
     """
-    bodhi_url =  "https://bodhi.fedoraproject.org/releases/"
+    bodhi_url = "https://bodhi.fedoraproject.org/releases/"
     releases = []
     states = ["current", "pending", "frozen"]
     for state in states:
@@ -21,18 +22,26 @@ def bodhi_active_releases():
         response = requests.get(url)
         response.raise_for_status()
         releases.extend(response.json()["releases"])
-    return [Munch(x) for x in releases]
+    return releases
 
 
-def get_distro_aliases():
+def get_distro_aliases(cache=None):
     """
     Define distribution aliases like `fedora-stable`, `fedora-branched`,
     `epel-all`, and more.
     """
-    releases = bodhi_active_releases()
-    epel = []
+    if cache is True:
+        cache = Cache()
+    try:
+        releases = bodhi_active_releases()
+        if cache:
+            cache.save(releases)
+    except requests.exceptions.RequestException as ex:
+        if not cache:
+            raise ex
+        releases = cache.load()
 
-    distros = [Distro.from_bodhi_release(x) for x in releases if x.name != "ELN"]
+    distros = [Distro.from_bodhi_release(x) for x in releases if x["name"] != "ELN"]
     distros.sort(key=lambda x: float(x.version_number))
 
     epel = [x for x in distros if x.product == "epel"]
@@ -79,8 +88,8 @@ class Distro(Munch):
         Create a `Distro` object from Bodhi `release`
         """
         keys = ["name", "long_name", "version", "state", "branch", "id_prefix"]
-        distro = cls({k: getattr(release, k) for k in keys})
-        distro.version_number = release.version
+        distro = cls({k: release.get(k) for k in keys})
+        distro.version_number = release["version"]
         return distro
 
     @property
