@@ -2,7 +2,11 @@ import os
 import json
 from unittest.mock import patch, MagicMock
 from munch import Munch
-from fedora_distro_aliases import Distro, get_distro_aliases
+from fedora_distro_aliases import (
+    Distro,
+    bodhi_active_releases,
+    get_distro_aliases,
+)
 
 here = os.path.abspath(os.path.dirname(__file__))
 datadir = os.path.join(here, "data")
@@ -66,3 +70,35 @@ def test_f40_branch_to_final_release_window(requests_get):
 
     version_numbers = [x.version_number for x in aliases["fedora-all"]]
     assert version_numbers == ["38", "39", "40", "41"]
+
+
+@patch("requests.get")
+def test_pagination(requests_get):
+    """
+    Test that pagination works as expected.
+    """
+    requests_get.side_effect = mock_responses([
+        "bodhi-page-1.json",
+        "bodhi-page-2.json",
+    ])
+    releases = bodhi_active_releases()
+    names = [r.name for r in releases]
+    assert names == [
+        "ELN",
+        "EPEL-10.0",
+        "EPEL-8",
+        "EPEL-9",
+        "EPEL-9N",
+        "F39",
+        "F39C",
+        "F39F",
+        "F40",
+        "F40C",
+        "F40F",
+        "F41",
+        "F41C",
+        "F41F",
+        "F42",
+        "F42C",
+        "F42F",
+    ]

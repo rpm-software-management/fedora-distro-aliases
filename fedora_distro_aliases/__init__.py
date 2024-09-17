@@ -16,13 +16,22 @@ def bodhi_active_releases():
     bodhi_url =  "https://bodhi.fedoraproject.org/releases/"
     releases = []
     states = ["current", "pending", "frozen"]
-    response = requests.get(
-        bodhi_url,
-        params={"state": states}
-    )
-    response.raise_for_status()
-    response_json = response.json()
-    releases.extend(response_json["releases"])
+
+    # Bodhi's API returns results in pages of 20, so we must check if there are
+    # additional pages to make sure we don't miss any releases.
+    page = 1
+    while True:
+        response = requests.get(
+            bodhi_url,
+            params={"state": states, "page": page}
+        )
+        response.raise_for_status()
+        response_json = response.json()
+        releases.extend(response_json["releases"])
+        if page == response_json["pages"]:
+            break
+        page += 1
+
     return [Munch(x) for x in releases]
 
 
