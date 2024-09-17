@@ -10,8 +10,7 @@ datadir = os.path.join(here, "data")
 
 def mock_responses(files):
     """
-    Every `bodhi_active_releases` call sends 3 HTTP requests. To comfortably
-    mock their responses from saved files, we can use this function.
+    We can use this function to comfortably mock responses from saved files.
     """
     responses = []
     for name in files:
@@ -52,9 +51,7 @@ def test_f40_branch_to_final_release_window(requests_get):
     to the final release.
     """
     requests_get.side_effect = mock_responses([
-        "bodhi-f40-branch-window-current.json",
-        "bodhi-f40-branch-window-pending.json",
-        "bodhi-f40-branch-window-frozen.json",
+        "bodhi-f40-branch-window.json",
     ])
     aliases = get_distro_aliases()
     branches = [x.branch for x in aliases["fedora-all"]]

@@ -16,11 +16,13 @@ def bodhi_active_releases():
     bodhi_url =  "https://bodhi.fedoraproject.org/releases/"
     releases = []
     states = ["current", "pending", "frozen"]
-    for state in states:
-        url = "{0}?state={1}".format(bodhi_url, state)
-        response = requests.get(url)
-        response.raise_for_status()
-        releases.extend(response.json()["releases"])
+    response = requests.get(
+        bodhi_url,
+        params={"state": states}
+    )
+    response.raise_for_status()
+    response_json = response.json()
+    releases.extend(response_json["releases"])
     return [Munch(x) for x in releases]
 
 
