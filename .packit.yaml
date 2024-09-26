@@ -1,0 +1,39 @@
+# See the documentation for more information:
+# https://packit.dev/docs/configuration/
+
+---
+require:
+  label:
+    absent:
+      - no-ci-builds
+
+actions:
+  create-archive:
+    - bash -c "tito build --tgz --test -o ."
+    - bash -c "ls -1t ./*.tar.gz | head -n 1"
+  get-current-version:
+    - bash -c "grep ^Version \"$PACKIT_CONFIG_PACKAGE_NAME.spec\" | awk '{ print $2 }'"
+
+packages:
+  fedora-distro-aliases:
+    specfile_path: fedora-distro-aliases.spec
+    downstream_package_name: fedora-distro-aliases
+    upstream_tag_template: fedora-distro-aliases-{version}
+srpm_build_deps:
+  - tito
+  - git
+
+jobs:
+  - <<: &pr_build
+      job: copr_build
+      trigger: pull_request
+      packages:
+        - fedora-distro-aliases
+      targets:
+        - fedora-all
+
+  - <<: *pr_build
+    trigger: commit
+    owner: "@rpm-software-management"
+    project: "fedora-distro-aliases"
+    branch: main
