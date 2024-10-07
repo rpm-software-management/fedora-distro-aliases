@@ -93,7 +93,7 @@ fetched data, and use them when there is an issue.
 
 To configure parameters for the cache pass an object instead of `True`.
 
-```
+```python
 >>> from fedora_distro_aliases import Cache
 >>> cache = Cache(path="/tmp/fedora-distro-aliases-cache.json", ttl=3600)
 >>> aliases = get_distro_aliases(cache=cache)
