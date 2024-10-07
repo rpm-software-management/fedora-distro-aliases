@@ -40,7 +40,7 @@ setup(
     classifiers=[],
     setup_requires=setup_requires,
     install_requires=install_requires,
-    packages=find_packages(),
+    packages=find_packages(exclude=["tests"]),
     include_package_data=True,
     zip_safe=False,
     py_modules=["cli"],
