@@ -1,5 +1,5 @@
 Name:           fedora-distro-aliases
-Version:        1.4
+Version:        1.5
 Release:        1%{?dist}
 Summary:        Aliases for active Fedora releases
 
@@ -56,6 +56,13 @@ Summary:        %{summary}
 
 
 %changelog
+* Mon Oct 07 2024 Jakub Kadlcik <frostyx@email.cz> 1.5-1
+- Implement a caching mechanism (frostyx@email.cz)
+- Return bodhi releases as simple dicts (frostyx@email.cz)
+- Add CLI (mfocko@redhat.com)
+- Use pagination for bodhi's API (carlwgeorge@gmail.com)
+- Combine HTTP calls in bodhi_active_releases (carlwgeorge@gmail.com)
+
 * Tue Aug 20 2024 Jakub Kadlcik <frostyx@email.cz> 1.4-1
 - Add an attribute with always numeric version number (frostyx@email.cz)
 
