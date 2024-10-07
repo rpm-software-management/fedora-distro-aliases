@@ -5,6 +5,7 @@ a list or implement a code similar to this.
 """
 
 import requests
+from typing import Optional
 from munch import Munch
 from fedora_distro_aliases.cache import Cache, SaveLoad
 
@@ -35,7 +36,7 @@ def bodhi_active_releases():
     return releases
 
 
-def get_distro_aliases(cache : SaveLoad|None = None):
+def get_distro_aliases(cache: Optional[SaveLoad] = None):
     """
     Define distribution aliases like `fedora-stable`, `fedora-branched`,
     `epel-all`, and more.
