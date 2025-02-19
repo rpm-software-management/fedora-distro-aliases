@@ -75,7 +75,7 @@ def get_distro_aliases(cache: Optional[SaveLoad] = None):
         fedora[-2].branch = "f{0}".format(fedora[-2].version)
 
     fedora_stable = [x for x in fedora if x.state == "current"]
-    fedora_devel = [x for x in fedora if x.state == "pending"]
+    fedora_devel = [x for x in fedora if x.state in ("pending", "frozen")]
 
     return {
         "fedora-all": fedora,

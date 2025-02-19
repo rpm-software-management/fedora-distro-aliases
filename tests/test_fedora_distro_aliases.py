@@ -54,6 +54,25 @@ def test_f40_branch_to_final_release_window(requests_get):
 
 
 @patch("requests.get")
+def test_f42_frozen_release(requests_get):
+    """
+    Test that everything behaves as expected when a branched release is frozen.
+    """
+    requests_get.side_effect = mock_responses([
+        "bodhi-f42-post-branch-window.json",
+    ])
+    aliases = get_distro_aliases()
+
+    namevers = [x.namever for x in aliases["fedora-branched"]]
+    expected = ["fedora-40", "fedora-41", "fedora-42"]
+    assert namevers == expected
+
+    namevers = [x.namever for x in aliases["fedora-development"]]
+    expected = ["fedora-42", "fedora-rawhide"]
+    assert namevers == expected
+
+
+@patch("requests.get")
 def test_pagination(requests_get):
     """
     Test that pagination works as expected.
