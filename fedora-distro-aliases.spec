@@ -1,5 +1,5 @@
 Name:           fedora-distro-aliases
-Version:        1.5
+Version:        1.6
 Release:        1%{?dist}
 Summary:        Aliases for active Fedora releases
 
@@ -56,6 +56,9 @@ Summary:        %{summary}
 
 
 %changelog
+* Thu Feb 20 2025 Jakub Kadlcik <frostyx@email.cz> 1.6-1
+- Account for `frozen` release state (nforro@redhat.com)
+
 * Mon Oct 07 2024 Jakub Kadlcik <frostyx@email.cz> 1.5-1
 - Implement a caching mechanism (frostyx@email.cz)
 - Return bodhi releases as simple dicts (frostyx@email.cz)
