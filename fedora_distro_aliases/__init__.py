@@ -4,6 +4,8 @@ currently active Fedora releases. They either need to manualy define them in
 a list or implement a code similar to this.
 """
 
+import itertools
+import operator
 import requests
 from typing import Optional
 from munch import Munch
@@ -77,7 +79,7 @@ def get_distro_aliases(cache: Optional[SaveLoad] = None):
     fedora_stable = [x for x in fedora if x.state == "current"]
     fedora_devel = [x for x in fedora if x.state in ("pending", "frozen")]
 
-    return {
+    aliases = {
         "fedora-all": fedora,
         "fedora-stable": fedora_stable,
         "fedora-development": fedora_devel,
@@ -86,6 +88,16 @@ def get_distro_aliases(cache: Optional[SaveLoad] = None):
         "fedora-branched": fedora_stable + fedora_devel[:-1],
         "epel-all": epel,
     }
+
+    # Generate aliases for minor versions of EPEL
+    epel_branching = [x for x in epel if x.major_version >= 10]
+    key = operator.attrgetter("major_version")
+    for majorver, group in itertools.groupby(sorted(epel_branching, key=key), key=key):
+        aliases[f"epel-{majorver}-all"] = minors = list(group)
+        aliases[f"epel-{majorver}-branched"] = [x for x in minors if "." in x.branch]
+        aliases[f"epel-{majorver}"] = [x for x in minors if "." not in x.branch]
+
+    return aliases
 
 
 class Distro(Munch):
@@ -122,3 +134,10 @@ class Distro(Munch):
         if self.id_prefix == "FEDORA-EPEL":
             return self.name.lower()
         return self.long_name.lower().replace(" ", "-")
+
+    @property
+    def major_version(self):
+        """
+        Major version number of this distro, e.g. 42 or 10
+        """
+        return int(self.version_number.split(".")[0])
