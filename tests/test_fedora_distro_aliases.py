@@ -73,6 +73,33 @@ def test_f42_frozen_release(requests_get):
 
 
 @patch("requests.get")
+def test_epel10_aliases(requests_get):
+    """
+    Test EPEL 10 minor version aliases.
+    """
+    requests_get.side_effect = mock_responses([
+        "bodhi-epel10-post-branch-window.json",
+    ])
+    aliases = get_distro_aliases()
+
+    namevers = [x.namever for x in aliases["epel-all"]]
+    expected = ["el-5", "el-6", "epel-7", "epel-8", "epel-9", "epel-10.0", "epel-10.1"]
+    assert namevers == expected
+
+    namevers = [x.namever for x in aliases["epel-10-all"]]
+    expected = ["epel-10.0", "epel-10.1"]
+    assert namevers == expected
+
+    namevers = [x.namever for x in aliases["epel-10"]]
+    expected = ["epel-10.1"]
+    assert namevers == expected
+
+    namevers = [x.namever for x in aliases["epel-10-branched"]]
+    expected = ["epel-10.0"]
+    assert namevers == expected
+
+
+@patch("requests.get")
 def test_pagination(requests_get):
     """
     Test that pagination works as expected.
