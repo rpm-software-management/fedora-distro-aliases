@@ -54,27 +54,33 @@ def get_distro_aliases(cache: Optional[SaveLoad] = None):
             raise ex
         releases = cache.load()
 
-    distros = [Distro.from_bodhi_release(x) for x in releases if x["name"] != "ELN"]
+    distros = [
+        Distro.from_bodhi_release(x)
+        for x in releases
+        if x["name"] != "ELN" and x["state"] != "archived"
+    ]
     distros.sort(key=lambda x: float(x.version_number))
 
     epel = [x for x in distros if x.product == "epel"]
     fedora = [x for x in distros if x.product == "fedora"]
 
-    # The Fedora with the highest version is "rawhide", but
-    # Bodhi always uses release names, and has no concept of "rawhide".
-    fedora[-1].update({
-        "name": "Rawhide",
-        "long_name": "Fedora Rawhide",
-        "version": "rawhide",
-        "branch": "rawhide",
-    })
+    if fedora:
+        # The Fedora with the highest version is "rawhide", but
+        # Bodhi always uses release names, and has no concept of "rawhide".
+        fedora[-1].update({
+            "name": "Rawhide",
+            "long_name": "Fedora Rawhide",
+            "version": "rawhide",
+            "branch": "rawhide",
+        })
 
-    # During the window from branching to the final release, things can get
-    # weird. Bodhi can be lying to us. For example, F40 was branched yesterday,
-    # therefore Rawhide is F41 now. However bodhi says that Fedora 40 branch is
-    # `rawhide` and F41 branch is `f41`.
-    if fedora[-2].branch == "rawhide":
-        fedora[-2].branch = "f{0}".format(fedora[-2].version)
+    if len(fedora) > 1:
+        # During the window from branching to the final release, things can get
+        # weird. Bodhi can be lying to us. For example, F40 was branched yesterday,
+        # therefore Rawhide is F41 now. However bodhi says that Fedora 40 branch is
+        # `rawhide` and F41 branch is `f41`.
+        if fedora[-2].branch == "rawhide":
+            fedora[-2].branch = "f{0}".format(fedora[-2].version)
 
     fedora_stable = [x for x in fedora if x.state == "current"]
     fedora_devel = [x for x in fedora if x.state in ("pending", "frozen")]

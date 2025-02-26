@@ -83,7 +83,7 @@ def test_epel10_aliases(requests_get):
     aliases = get_distro_aliases()
 
     namevers = [x.namever for x in aliases["epel-all"]]
-    expected = ["el-5", "el-6", "epel-7", "epel-8", "epel-9", "epel-10.0", "epel-10.1"]
+    expected = ["epel-8", "epel-9", "epel-10.0", "epel-10.1"]
     assert namevers == expected
 
     namevers = [x.namever for x in aliases["epel-10-all"]]
