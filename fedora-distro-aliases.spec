@@ -1,5 +1,5 @@
 Name:           fedora-distro-aliases
-Version:        1.6
+Version:        1.7
 Release:        1%{?dist}
 Summary:        Aliases for active Fedora releases
 
@@ -56,6 +56,10 @@ Summary:        %{summary}
 
 
 %changelog
+* Fri Mar 07 2025 Jakub Kadlcik <frostyx@email.cz> 1.7-1
+- Exclude archived releases (nforro@redhat.com)
+- Generate aliases for minor versions of EPEL (nforro@redhat.com)
+
 * Thu Feb 20 2025 Jakub Kadlcik <frostyx@email.cz> 1.6-1
 - Account for `frozen` release state (nforro@redhat.com)
 
