@@ -78,7 +78,7 @@ def test_epel10_aliases(requests_get):
     Test EPEL 10 minor version aliases.
     """
     requests_get.side_effect = mock_responses([
-        "bodhi-epel10-post-branch-window.json",
+        "bodhi-epel10-post-10.0-branch-window.json",
     ])
     aliases = get_distro_aliases()
 
@@ -96,6 +96,34 @@ def test_epel10_aliases(requests_get):
 
     namevers = [x.namever for x in aliases["epel-10-branched"]]
     expected = ["epel-10.0"]
+    assert namevers == expected
+
+
+@patch("requests.get")
+def test_epel10_aliases_multiple_branched(requests_get):
+    """
+    Test EPEL 10 minor version aliases when multiple minor versions
+    have branched from the current one.
+    """
+    requests_get.side_effect = mock_responses([
+        "bodhi-epel10-post-10.1-branch-window.json",
+    ])
+    aliases = get_distro_aliases()
+
+    namevers = [x.namever for x in aliases["epel-all"]]
+    expected = ["epel-8", "epel-9", "epel-10.0", "epel-10.1", "epel-10.2"]
+    assert namevers == expected
+
+    namevers = [x.namever for x in aliases["epel-10-all"]]
+    expected = ["epel-10.0", "epel-10.1", "epel-10.2"]
+    assert namevers == expected
+
+    namevers = [x.namever for x in aliases["epel-10"]]
+    expected = ["epel-10.2"]
+    assert namevers == expected
+
+    namevers = [x.namever for x in aliases["epel-10-branched"]]
+    expected = ["epel-10.0", "epel-10.1"]
     assert namevers == expected
 
 
