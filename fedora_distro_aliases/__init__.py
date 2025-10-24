@@ -147,3 +147,22 @@ class Distro(Munch):
         Major version number of this distro, e.g. 42 or 10
         """
         return int(self.version_number.split(".")[0])
+
+
+def filter_distro(aliases, name=None, branch=None, namever=None):
+    """
+    Filter out a `Distro` from aliases based on its `branch` or `namever` name.
+    """
+    if not bool(name) ^ bool(branch) ^ bool(namever):
+        raise AttributeError(
+            "Not possible to filter by multiple values at once"
+        )
+    for distros in aliases.values():
+        for distro in distros:
+            if name and distro.name == name:
+                return distro
+            if branch and distro.branch == branch:
+                return distro
+            if namever and distro.namever == namever:
+                return distro
+    return None
