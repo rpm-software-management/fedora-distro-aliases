@@ -1,9 +1,11 @@
+import unittest
 from unittest.mock import patch
 from munch import Munch
 from fedora_distro_aliases import (
     Distro,
     bodhi_active_releases,
     get_distro_aliases,
+    filter_distro,
 )
 from . import mock_responses
 
@@ -157,3 +159,44 @@ def test_pagination(requests_get):
         "F42C",
         "F42F",
     ]
+
+
+@patch("requests.get")
+def test_filter_distro(requests_get):
+    """
+    Test the `filter_distro` function
+    """
+    requests_get.side_effect = mock_responses([
+        "bodhi-f42-post-branch-window.json",
+    ])
+    aliases = get_distro_aliases()
+
+    distro = filter_distro(aliases, branch="rawhide")
+    assert distro.name == "Rawhide"
+    assert distro.long_name == "Fedora Rawhide"
+    assert distro.namever == "fedora-rawhide"
+    assert distro.major_version == 43
+
+    distro = filter_distro(aliases, namever="fedora-42")
+    assert distro.name == "F42"
+    assert distro.long_name == "Fedora 42"
+    assert distro.namever == "fedora-42"
+    assert distro.major_version == 42
+
+    distro = filter_distro(aliases, name="F41")
+    assert distro.name == "F41"
+    assert distro.namever == "fedora-41"
+
+    requests_get.side_effect = mock_responses([
+        "bodhi-epel10-post-10.0-branch-window.json",
+    ])
+    aliases = get_distro_aliases()
+    distro = filter_distro(aliases, branch="epel10.0")
+    assert distro.name == "EPEL-10.0"
+    assert distro.long_name == "Fedora EPEL 10.0"
+    assert distro.version == "10.0"
+    assert distro.namever == "epel-10.0"
+    assert distro.major_version == 10
+
+    with unittest.TestCase().assertRaises(AttributeError):
+        filter_distro(aliases, branch="epel10.0", namever="fedora-rawhide")
