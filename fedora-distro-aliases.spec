@@ -1,5 +1,5 @@
 Name:           fedora-distro-aliases
-Version:        1.7
+Version:        1.8
 Release:        1%{?dist}
 Summary:        Aliases for active Fedora releases
 
@@ -56,6 +56,10 @@ Summary:        %{summary}
 
 
 %changelog
+* Sat Oct 25 2025 Jakub Kadlcik <frostyx@email.cz> 1.8-1
+- Implement a filter_distro helper function (frostyx@email.cz)
+- Test EPEL minor version aliases after 10.1 branching (nforro@redhat.com)
+
 * Fri Mar 07 2025 Jakub Kadlcik <frostyx@email.cz> 1.7-1
 - Exclude archived releases (nforro@redhat.com)
 - Generate aliases for minor versions of EPEL (nforro@redhat.com)
